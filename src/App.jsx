@@ -8,7 +8,6 @@ function App() {
         <Link to="/">Home</Link>
         <Link to="/aliens">Aliens</Link>
       </nav>
-
       <AppRouter />
     </main>
   );
