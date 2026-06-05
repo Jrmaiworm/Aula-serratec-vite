@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router";
 import Aliens from "./pages/Aliens";
 import Home from "./pages/Home";
+import Planetas from "./pages/Planetas";
 
 function AppRouter() {
   return (
