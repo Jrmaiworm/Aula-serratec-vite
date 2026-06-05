@@ -6,21 +6,26 @@ const url = "https://api.serratec.mwmsoftware.com/aliens";
 
 function Aliens() {
   const [aliens, setAliens] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [mensagem, setMensagem] = useState("");
   const [formAlien, setFormAlien] = useState({
-    nome: "",
-    especie: "",
-    planeta: "",
-    periculosidade: 1,
-    descricao: "",
-  });
+  "nome": "",
+  "especie": "",
+  "planeta": "",
+  "periculosidade": 1,
+  "descricao": ""
+});
+  
 
   async function buscarAliensComAxios() {
     try {
+      setLoading(true);
       const resposta = await axios.get(url);
       setAliens(resposta.data);
     } catch (error) {
       console.error("Erro ao buscar aliens com axios:", error);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -38,7 +43,8 @@ function Aliens() {
         periculosidade: 1,
         descricao: "",
       });
-      setMensagem("Alien cadastrado com sucesso!");
+      setMensagem("Alien cadastrado com sucesso!")
+      
     } catch (error) {
       console.error("Erro ao cadastrar alien:", error);
       setMensagem("Erro ao cadastrar alien.");
@@ -56,19 +62,23 @@ function Aliens() {
   return (
     <section>
       <h1>Aliens</h1>
-
+    
       <FormAlien
         cadastrarAlien={cadastrarAlien}
         formAlien={formAlien}
         setFormAlien={setFormAlien}
       />
-      {mensagem && <p className="mensagem">{mensagem}</p>}
 
-      <div className="alien-list">
-        {aliens.map((alien) => (
-          <article className="alien-card" key={alien.id}>
-            <h3>
-              {alien?.nome === "string" ? "Nome não disponível" : alien?.nome}
+
+      {mensagem && <p className="mensagem">{mensagem}</p>}
+{loading ? (
+        <p>Carregando aliens...</p>
+      ) : (
+        <div className="alien-list">
+          {aliens.map((alien) => (
+            <article className="alien-card" key={alien.id}>
+              <h3>
+                {alien?.nome === "string" ? "Nome não disponível" : alien?.nome}
             </h3>
             <p>
               <strong>Espécie:</strong> {alien?.especie}
@@ -84,7 +94,7 @@ function Aliens() {
             </p>
           </article>
         ))}
-      </div>
+      </div>)}
     </section>
   );
 }
