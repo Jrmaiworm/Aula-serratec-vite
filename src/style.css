@@ -19,7 +19,8 @@ body {
   margin-bottom: 28px;
 }
 
-.menu a {
+.menu a,
+.menu-button {
   border-radius: 6px;
   padding: 10px 14px;
   background: #ffffff;
@@ -28,9 +29,16 @@ body {
   text-decoration: none;
 }
 
-.menu a:hover {
+.menu a:hover,
+.menu-button:hover {
   background: #2176ff;
   color: #ffffff;
+}
+
+.menu-button {
+  width: auto;
+  border: 0;
+  cursor: pointer;
 }
 
 .app h1 {
@@ -55,19 +63,42 @@ body {
   font-size: 18px;
 }
 
-.alien-form {
+.login-page {
+  display: flex;
+  justify-content: center;
+}
+
+.login-form {
   display: grid;
   gap: 14px;
-  margin-bottom: 24px;
-  padding: 20px;
+  width: min(100%, 420px);
+  padding: 24px;
   border: 1px solid #d9e1ea;
   border-radius: 8px;
   background: #ffffff;
   box-shadow: 0 8px 24px rgba(16, 32, 51, 0.08);
 }
 
+.login-form h1 {
+  margin-bottom: 8px;
+}
+
+.login-form label {
+  display: grid;
+  gap: 6px;
+  color: #405063;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.alien-form {
+  display: grid;
+  gap: 14px;
+  padding: 20px;
+}
+
 .alien-form h2 {
-  margin: 0 0 8px;
+  margin: 0;
   color: #102033;
   font-size: 22px;
 }
@@ -78,6 +109,12 @@ body {
   color: #405063;
   font-size: 14px;
   font-weight: 700;
+}
+
+.alien-form .checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 input {
@@ -93,6 +130,10 @@ input {
 input:focus {
   border-color: #2176ff;
   outline: 3px solid rgba(33, 118, 255, 0.16);
+}
+
+input[type="checkbox"] {
+  width: auto;
 }
 
 button {
@@ -112,6 +153,87 @@ button:hover {
   background: #185fd1;
 }
 
+button:disabled {
+  background: #8ba9cc;
+  cursor: not-allowed;
+}
+
+.open-modal-button {
+  display: inline;
+  
+  margin: 0 auto 24px;
+  width: auto;
+}
+
+.usuario-logado {
+  margin: -12px 0 24px;
+  color: #405063;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(16, 32, 51, 0.55);
+}
+
+.modal-content {
+  width: min(100%, 480px);
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  border: 1px solid #d9e1ea;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 18px 42px rgba(16, 32, 51, 0.28);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.modal-close {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background: #eef2f6;
+  color: #405063;
+}
+
+.modal-close:hover {
+  background: #d9e1ea;
+  color: #102033;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.form-actions button {
+  width: auto;
+}
+
+.button-secondary {
+  background: #e7edf4;
+  color: #405063;
+}
+
+.button-secondary:hover {
+  background: #d5dfeb;
+  color: #102033;
+}
+
 .mensagem {
   margin: 0 0 20px;
   padding: 12px;
@@ -119,6 +241,27 @@ button:hover {
   background: #e8f5ed;
   color: #176b38;
   font-weight: 700;
+}
+
+.login-form .mensagem {
+  margin-bottom: 0;
+}
+
+.mensagem.erro {
+  background: #fdecec;
+  color: #9f1d20;
+}
+
+.form-link {
+  justify-self: center;
+  color: #2176ff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.form-link:hover {
+  color: #185fd1;
+  text-decoration: underline;
 }
 
 .alien-list {

@@ -1,8 +1,15 @@
 import { Link, useNavigate } from "react-router";
+import { useAuth } from "./contexts/AuthContext";
 import AppRouter from "./router";
 
 function App() {
   const navigate = useNavigate();
+  const { estaAutenticado, logout } = useAuth();
+
+  async function sair() {
+    await logout();
+    navigate("/login");
+  }
 
   return (
     <main className="app">
@@ -17,7 +24,22 @@ function App() {
           Use Link quando a navegacao aparece direto na tela, como menu ou botoes de pagina.
         */}
         <Link to="/">Home</Link>
-        <Link to="/aliens">Aliens</Link>
+        {estaAutenticado && (
+          <>
+            <Link to="/aliens">Aliens</Link>
+            <Link to="/planetas">Planetas</Link>
+          </>
+        )}
+        {estaAutenticado ? (
+          <button className="menu-button" type="button" onClick={sair}>
+            Sair
+          </button>
+        ) : (
+          <>
+            <Link to="/login">Login</Link>
+            <Link to="/cadastro">Cadastro</Link>
+          </>
+        )}
         {/* <Link to="/planetas">Planetas</Link> */}
 
 
