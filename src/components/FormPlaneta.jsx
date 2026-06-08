@@ -1,8 +1,13 @@
-function FormAlien({ cadastrarAlien, fecharModal, formAlien, setFormAlien }) {
+function FormPlaneta({
+  cadastrarPlaneta,
+  fecharModal,
+  formPlaneta,
+  setFormPlaneta,
+}) {
   return (
-    <form className="alien-form" onSubmit={cadastrarAlien}>
+    <form className="alien-form" onSubmit={cadastrarPlaneta}>
       <div className="modal-header">
-        <h2>Cadastrar alien</h2>
+        <h2>Cadastrar planeta</h2>
         <button
           aria-label="Fechar modal"
           className="modal-close"
@@ -16,74 +21,68 @@ function FormAlien({ cadastrarAlien, fecharModal, formAlien, setFormAlien }) {
       <label>
         Nome
         <input
+          minLength="2"
           name="nome"
-          minLength="2"
           onChange={(event) =>
-            setFormAlien({ ...formAlien, nome: event.target.value })
+            setFormPlaneta({ ...formPlaneta, nome: event.target.value })
           }
           required
           type="text"
-          value={formAlien.nome}
+          value={formPlaneta.nome}
         />
       </label>
 
       <label>
-        Espécie
+        Galáxia
         <input
-          name="especie"
           minLength="2"
+          name="galaxia"
           onChange={(event) =>
-            setFormAlien({ ...formAlien, especie: event.target.value })
+            setFormPlaneta({ ...formPlaneta, galaxia: event.target.value })
           }
           required
           type="text"
-          value={formAlien.especie}
+          value={formPlaneta.galaxia}
         />
       </label>
 
       <label>
-        Planeta
+        Clima
         <input
-          name="planeta"
           minLength="2"
+          name="clima"
           onChange={(event) =>
-            setFormAlien({ ...formAlien, planeta: event.target.value })
+            setFormPlaneta({ ...formPlaneta, clima: event.target.value })
           }
           required
           type="text"
-          value={formAlien.planeta}
+          value={formPlaneta.clima}
         />
       </label>
 
-      <label>
-        Periculosidade
+      <label className="checkbox-field">
         <input
-          max="10"
-          min="1"
-          name="periculosidade"
+          checked={formPlaneta.habitavel}
+          name="habitavel"
           onChange={(event) =>
-            setFormAlien({
-              ...formAlien,
-              periculosidade: Number(event.target.value),
-            })
+            setFormPlaneta({ ...formPlaneta, habitavel: event.target.checked })
           }
-          required
-          type="number"
-          value={formAlien.periculosidade}
+          type="checkbox"
         />
+        Habitável
       </label>
 
       <label>
         Descrição
         <input
-          name="descricao"
           minLength="3"
+          name="descricao"
           onChange={(event) =>
-            setFormAlien({ ...formAlien, descricao: event.target.value })
+            setFormPlaneta({ ...formPlaneta, descricao: event.target.value })
           }
           required
           type="text"
-          value={formAlien.descricao}
+          value={formPlaneta.descricao}
         />
       </label>
 
@@ -97,4 +96,4 @@ function FormAlien({ cadastrarAlien, fecharModal, formAlien, setFormAlien }) {
   );
 }
 
-export default FormAlien;
+export default FormPlaneta;

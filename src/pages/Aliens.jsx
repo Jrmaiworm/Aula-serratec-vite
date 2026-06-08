@@ -1,26 +1,43 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import FormAlien from "../components/FormAlien";
+import { useAuth } from "../contexts/AuthContext";
+import api from "../services/api";
 
-const url = "https://api.serratec.mwmsoftware.com/aliens";
+const url = "/aliens";
 
 function Aliens() {
+  const { nomeUsuario } = useAuth();
   const [aliens, setAliens] = useState([]);
   const [loading, setLoading] = useState(false);
   const [mensagem, setMensagem] = useState("");
+  const [modalAberto, setModalAberto] = useState(false);
   const [formAlien, setFormAlien] = useState({
-  "nome": "",
-  "especie": "",
-  "planeta": "",
-  "periculosidade": 1,
-  "descricao": ""
-});
-  
+    nome: "",
+    especie: "",
+    planeta: "",
+    periculosidade: 1,
+    descricao: "",
+  });
+
+  function limparFormulario() {
+    setFormAlien({
+      nome: "",
+      especie: "",
+      planeta: "",
+      periculosidade: 1,
+      descricao: "",
+    });
+  }
+
+  function fecharModal() {
+    setModalAberto(false);
+    limparFormulario();
+  }
 
   async function buscarAliensComAxios() {
     try {
       setLoading(true);
-      const resposta = await axios.get(url);
+      const resposta = await api.get(url);
       setAliens(resposta.data);
     } catch (error) {
       console.error("Erro ao buscar aliens com axios:", error);
@@ -34,16 +51,11 @@ function Aliens() {
     setMensagem("");
 
     try {
-      const resposta = await axios.post(url, formAlien);
+      const resposta = await api.post(url, formAlien);
       setAliens((listaAtual) => [...listaAtual, resposta.data]);
-      setFormAlien({
-        nome: "",
-        especie: "",
-        planeta: "",
-        periculosidade: 1,
-        descricao: "",
-      });
-      setMensagem("Alien cadastrado com sucesso!")
+      limparFormulario();
+      setModalAberto(false);
+      setMensagem("Alien cadastrado com sucesso!");
       
     } catch (error) {
       console.error("Erro ao cadastrar alien:", error);
@@ -55,19 +67,31 @@ function Aliens() {
     buscarAliensComAxios();
   }, []);
 
-  useEffect(() => {
-    console.log("Estado aliens atualizado:", aliens);
-  }, [aliens]);
-
   return (
     <section>
       <h1>Aliens</h1>
-    
-      <FormAlien
-        cadastrarAlien={cadastrarAlien}
-        formAlien={formAlien}
-        setFormAlien={setFormAlien}
-      />
+      {nomeUsuario && <p className="usuario-logado">Olá, {nomeUsuario}</p>}
+
+      <button
+        className="open-modal-button"
+        onClick={() => setModalAberto(true)}
+        type="button"
+      >
+        Cadastrar alien
+      </button>
+
+      {modalAberto && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <FormAlien
+              cadastrarAlien={cadastrarAlien}
+              fecharModal={fecharModal}
+              formAlien={formAlien}
+              setFormAlien={setFormAlien}
+            />
+          </div>
+        </div>
+      )}
 
 
       {mensagem && <p className="mensagem">{mensagem}</p>}
