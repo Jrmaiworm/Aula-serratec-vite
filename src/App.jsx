@@ -28,6 +28,7 @@ function App() {
           <>
             <Link to="/aliens">Aliens</Link>
             <Link to="/planetas">Planetas</Link>
+            <Link to="/avistamentos">Avistamentos</Link>
           </>
         )}
         {estaAutenticado ? (

@@ -278,6 +278,20 @@ button:disabled {
   box-shadow: 0 6px 18px rgba(16, 32, 51, 0.06);
 }
 
+.avistamento-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.avistamento-card {
+  padding: 16px;
+  border: 1px solid #d9e1ea;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 6px 18px rgba(16, 32, 51, 0.06);
+}
+
 .alien-card h3 {
   margin: 0 0 12px;
   color: #102033;
