@@ -63,6 +63,13 @@ body {
   font-size: 18px;
 }
 
+.home-ufo-image {
+  display: block;
+  width: min(100%, 520px);
+  margin: 0 auto 20px;
+  border-radius: 8px;
+}
+
 .login-page {
   display: flex;
   justify-content: center;
