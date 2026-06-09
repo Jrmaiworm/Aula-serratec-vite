@@ -80,7 +80,10 @@ function FormAvistamento({ cadastrarAvistamento, fecharModal, formAvistamento, s
           name="nivelMedo"
           
           onChange={(event) =>
-            setFormAvistamento({ ...formAvistamento, nivelMedo: event.target.value })
+            setFormAvistamento({
+              ...formAvistamento,
+              nivelMedo: Number(event.target.value),
+            })
           }
           required
           type="number"
