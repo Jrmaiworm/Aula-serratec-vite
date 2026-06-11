@@ -7,6 +7,7 @@ const url = "/aliens";
 
 function Aliens() {
   const { nomeUsuario } = useAuth();
+  const [modeEdit, setModeEdit] = useState(false);
   const [aliens, setAliens] = useState([]);
   const [loading, setLoading] = useState(false);
   const [mensagem, setMensagem] = useState("");
@@ -31,7 +32,15 @@ function Aliens() {
 
   function fecharModal() {
     setModalAberto(false);
+    setModeEdit(false);
     limparFormulario();
+  }
+
+  function abrirModalCadastro() {
+    setMensagem("");
+    setModeEdit(false);
+    limparFormulario();
+    setModalAberto(true);
   }
 
   async function buscarAliensComAxios() {
@@ -46,6 +55,33 @@ function Aliens() {
     }
   }
 
+  async function deletarAlien(id) {
+    try {
+      setMensagem("");
+      await api.delete(`${url}/${id}`);
+      setAliens((listaAtual) => listaAtual.filter((alien) => alien.id !== id));
+      setMensagem("Alien excluído com sucesso!");
+    } catch (error) {
+      console.error("Erro ao excluir alien:", error);
+      setMensagem("Erro ao excluir alien.");
+    }
+  };
+
+  function abrirModalEdicao(alien) {
+    setMensagem("");
+    setModeEdit(true);
+    setFormAlien({
+      id: alien.id,
+      nome: alien.nome ?? "",
+      especie: alien.especie ?? "",
+      planeta: alien.planeta ?? "",
+      periculosidade: alien.periculosidade ?? 1,
+      descricao: alien.descricao ?? "",
+    });
+    setModalAberto(true);
+  }
+
+
   async function cadastrarAlien(event) {
     event.preventDefault();
     setMensagem("");
@@ -53,13 +89,38 @@ function Aliens() {
     try {
       const resposta = await api.post(url, formAlien);
       setAliens((listaAtual) => [...listaAtual, resposta.data]);
+      setMensagem("Alien cadastrado com sucesso!");
+
       limparFormulario();
       setModalAberto(false);
-      setMensagem("Alien cadastrado com sucesso!");
-      
+
     } catch (error) {
       console.error("Erro ao cadastrar alien:", error);
       setMensagem("Erro ao cadastrar alien.");
+    }
+  }
+
+  async function editarAlien(event) {
+    event.preventDefault();
+    setMensagem("");
+
+    try {
+      const resposta = await api.put(`${url}/${formAlien.id}`, formAlien);
+      const alienAtualizado = resposta.data ?? formAlien;
+
+      setAliens((listaAtual) =>
+        listaAtual.map((alien) =>
+          alien.id === formAlien.id ? { ...alien, ...alienAtualizado } : alien
+        )
+      );
+
+      setMensagem("Alien editado com sucesso!");
+      limparFormulario();
+      setModeEdit(false);
+      setModalAberto(false);
+    } catch (error) {
+      console.error("Erro ao editar alien:", error);
+      setMensagem("Erro ao editar alien.");
     }
   }
 
@@ -67,6 +128,8 @@ function Aliens() {
     buscarAliensComAxios();
   }, []);
 
+
+  
   return (
     <section>
       <h1>Aliens</h1>
@@ -74,7 +137,7 @@ function Aliens() {
 
       <button
         className="open-modal-button"
-        onClick={() => setModalAberto(true)}
+        onClick={abrirModalCadastro}
         type="button"
       >
         Cadastrar alien
@@ -84,7 +147,8 @@ function Aliens() {
         <div className="modal-overlay">
           <div className="modal-content">
             <FormAlien
-              cadastrarAlien={cadastrarAlien}
+              modeEdit={modeEdit}
+              cadastrarAlien={modeEdit ? editarAlien : cadastrarAlien}
               fecharModal={fecharModal}
               formAlien={formAlien}
               setFormAlien={setFormAlien}
@@ -95,7 +159,7 @@ function Aliens() {
 
 
       {mensagem && <p className="mensagem">{mensagem}</p>}
-{loading ? (
+      {loading ? (
         <p>Carregando aliens...</p>
       ) : (
         <div className="alien-list">
@@ -103,22 +167,29 @@ function Aliens() {
             <article className="alien-card" key={alien.id}>
               <h3>
                 {alien?.nome === "string" ? "Nome não disponível" : alien?.nome}
-            </h3>
-            <p>
-              <strong>Espécie:</strong> {alien?.especie}
-            </p>
-            <p>
-              <strong>Planeta:</strong> {alien?.planeta}
-            </p>
-            <p>
-              <strong>Periculosidade:</strong> {alien?.periculosidade}
-            </p>
-            <p>
-              <strong>Descrição:</strong> {alien?.descricao}
-            </p>
-          </article>
-        ))}
-      </div>)}
+              </h3>
+              <p>
+                <strong>Espécie:</strong> {alien?.especie}
+              </p>
+              <p>
+                <strong>Planeta:</strong> {alien?.planeta}
+              </p>
+              <p>
+                <strong>Periculosidade:</strong> {alien?.periculosidade}
+              </p>
+              <p>
+                <strong>Descrição:</strong> {alien?.descricao}
+              </p>
+              <div className="card-actions">
+                <button onClick={() => deletarAlien(alien.id)} className="button-excluir">Excluir</button>
+
+                
+                <button onClick={() => abrirModalEdicao(alien)} className="button-secondary">Editar</button>
+              </div>
+
+            </article>
+          ))}
+        </div>)}
     </section>
   );
 }

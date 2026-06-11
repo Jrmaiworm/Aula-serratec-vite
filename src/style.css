@@ -241,6 +241,16 @@ button:disabled {
   color: #102033;
 }
 
+.button-danger {
+  background: #c82f35;
+}
+
+.button-danger:hover {
+  background: #9f1d20;
+}
+.button-excluir {
+  background: #c82f35;
+}
 .mensagem {
   margin: 0 0 20px;
   padding: 12px;
@@ -297,6 +307,16 @@ button:disabled {
   border-radius: 8px;
   background: #ffffff;
   box-shadow: 0 6px 18px rgba(16, 32, 51, 0.06);
+}
+
+.card-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.card-actions button {
+  width: auto;
 }
 
 .alien-card h3 {
